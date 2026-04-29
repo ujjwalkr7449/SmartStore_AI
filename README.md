@@ -43,7 +43,7 @@ graph TD
 - **Pydantic** (v2.9.2) - Data validation and settings management
 - **APScheduler** (v3.10.4) - Background task scheduling
 - **Uvicorn** (v0.30.6) - ASGI server
-- **OpenAI Python SDK** (v1.51.2) - LLM integration
+- **GroqAI Python SDK** (v1.51.2) - LLM integration
 
 **Frontend:**
 - **React** (v18.3.1) - UI library
