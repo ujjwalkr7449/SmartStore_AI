@@ -6,23 +6,23 @@ SmartStore AI is an intelligent inventory and vendor management system designed 
 ## 2. Architecture Diagram
 ```mermaid
 graph TD
-    subgraph Frontend [Frontend (React + Zustand)]
-        UI[User Interface]
-        State[Zustand Store]
-        APIClient[Axios Client]
+    subgraph Frontend ["Frontend (React + Zustand)"]
+        UI["User Interface"]
+        State["Zustand Store"]
+        APIClient["Axios Client"]
     end
 
-    subgraph Backend [Backend (FastAPI)]
-        Router[API Routers]
-        Auth[JWT Auth]
-        Service[Business Logic / Services]
-        Scheduler[APScheduler / Cron]
-        ORM[SQLAlchemy ORM]
+    subgraph Backend ["Backend (FastAPI)"]
+        Router["API Routers"]
+        Auth["JWT Auth"]
+        Service["Business Logic / Services"]
+        Scheduler["APScheduler / Cron"]
+        ORM["SQLAlchemy ORM"]
     end
 
     subgraph External
-        DB[(SQLite / PostgreSQL)]
-        LLM[Groq API / OpenAI SDK]
+        DB[("SQLite / PostgreSQL")]
+        LLM["Groq API / OpenAI SDK"]
     end
 
     UI --> State
