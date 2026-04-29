@@ -1,12 +1,12 @@
 import apiClient from './apiClient';
 
 export const fetchSuppliers = async () => {
-  const { data } = await apiClient.get('/suppliers');
+  const { data } = await apiClient.get('/suppliers/');
   return data;
 };
 
 export const createSupplier = async (payload) => {
-  const { data } = await apiClient.post('/suppliers', payload);
+  const { data } = await apiClient.post('/suppliers/', payload);
   return data;
 };
 

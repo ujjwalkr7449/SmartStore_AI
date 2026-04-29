@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
 
-from core.deps import get_current_user
+from core.deps import get_current_user, require_admin
 from db.session import get_db
 from models.product import Product
 from schemas.product import ForecastResponse, ProductCreateRequest, ProductResponse, ProductUpdateRequest
@@ -11,7 +11,7 @@ router = APIRouter()
 
 
 @router.post("", response_model=ProductResponse, status_code=status.HTTP_201_CREATED)
-def create(payload: ProductCreateRequest, db: Session = Depends(get_db), _=Depends(get_current_user)):
+def create(payload: ProductCreateRequest, db: Session = Depends(get_db), _=Depends(require_admin)):
     return create_product(db, payload)
 
 
@@ -26,7 +26,7 @@ def get_product(product_id: int, db: Session = Depends(get_db), _=Depends(get_cu
 
 
 @router.put("/{product_id}", response_model=ProductResponse)
-def update(product_id: int, payload: ProductUpdateRequest, db: Session = Depends(get_db), _=Depends(get_current_user)):
+def update(product_id: int, payload: ProductUpdateRequest, db: Session = Depends(get_db), _=Depends(require_admin)):
     product = get_product_or_404(db, product_id)
     for key, value in payload.model_dump(exclude_none=True).items():
         setattr(product, key, value)
@@ -36,7 +36,7 @@ def update(product_id: int, payload: ProductUpdateRequest, db: Session = Depends
 
 
 @router.delete("/{product_id}", status_code=status.HTTP_200_OK)
-def delete(product_id: int, db: Session = Depends(get_db), _=Depends(get_current_user)):
+def delete(product_id: int, db: Session = Depends(get_db), _=Depends(require_admin)):
     product = get_product_or_404(db, product_id)
     db.delete(product)
     db.commit()

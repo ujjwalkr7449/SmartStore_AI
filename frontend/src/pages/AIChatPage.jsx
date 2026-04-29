@@ -44,6 +44,12 @@ export default function AIChatPage() {
     }
   };
 
+  const suggestions = [
+    "Which products are currently low on stock?",
+    "Can you give me the details for product ID 1?",
+    "What is the purchase order history for product ID 1?"
+  ];
+
   return (
     <Layout>
       <div className="flex flex-col h-[calc(100vh-6rem)] md:h-[calc(100vh-8rem)] max-w-4xl mx-auto bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden relative">
@@ -86,18 +92,7 @@ export default function AIChatPage() {
                     <p className="whitespace-pre-wrap leading-relaxed text-[15px]">{chat.content}</p>
                   </div>
                   
-                  {/* Tool Results visualization */}
-                  {chat.tools && Object.keys(chat.tools).length > 0 && (
-                    <div className="mt-2 bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm text-slate-600 overflow-hidden shadow-inner">
-                      <div className="flex items-center gap-2 mb-2 pb-2 border-b border-slate-200">
-                        <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                        </svg>
-                        <span className="font-semibold text-slate-700">Database Query Results</span>
-                      </div>
-                      <pre className="overflow-x-auto text-xs">{JSON.stringify(chat.tools, null, 2)}</pre>
-                    </div>
-                  )}
+
                 </div>
               </div>
             </div>
@@ -127,6 +122,21 @@ export default function AIChatPage() {
             <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
             {error}
           </p>}
+
+          <div className="flex flex-wrap gap-2 mb-3 px-1">
+            {suggestions.map((suggestion, idx) => (
+              <button
+                key={idx}
+                onClick={() => {
+                  setMessage(suggestion);
+                }}
+                className="text-xs bg-indigo-50 hover:bg-indigo-100 text-indigo-700 px-3 py-1.5 rounded-full font-medium transition-colors border border-indigo-100"
+              >
+                {suggestion}
+              </button>
+            ))}
+          </div>
+
           <form onSubmit={handleSubmit} className="relative flex items-end gap-2 bg-gray-50 border border-gray-200 rounded-2xl p-2 focus-within:ring-2 focus-within:ring-indigo-500 focus-within:border-transparent transition-all">
             <textarea 
               className="w-full bg-transparent p-2 max-h-32 outline-none resize-none text-[15px]" 

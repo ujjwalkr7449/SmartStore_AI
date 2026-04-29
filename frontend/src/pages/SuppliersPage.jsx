@@ -5,13 +5,13 @@ import { useSuppliers } from '../hooks/useSuppliers';
 
 export default function SuppliersPage() {
   const { suppliers, loading, error, add, remove } = useSuppliers();
-  const [form, setForm] = useState({ name: '', contact_email: '', phone: '', address: '' });
+  const [form, setForm] = useState({ name: '', email: '', phone: '', address: '' });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!form.name || !form.contact_email) return;
+    if (!form.name || !form.email) return;
     await add(form);
-    setForm({ name: '', contact_email: '', phone: '', address: '' });
+    setForm({ name: '', email: '', phone: '', address: '' });
   };
 
   return (
@@ -31,7 +31,7 @@ export default function SuppliersPage() {
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Contact Email *</label>
-              <input required type="email" className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition-all" value={form.contact_email} onChange={(e) => setForm(f => ({ ...f, contact_email: e.target.value }))} placeholder="hello@acme.com" />
+              <input required type="email" className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition-all" value={form.email} onChange={(e) => setForm(f => ({ ...f, email: e.target.value }))} placeholder="hello@acme.com" />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
@@ -66,7 +66,7 @@ export default function SuppliersPage() {
                   {suppliers.map(s => (
                     <tr key={s.id} className="hover:bg-gray-50/50 transition-colors">
                       <td className="px-6 py-4 font-medium text-gray-900">{s.name}</td>
-                      <td className="px-6 py-4 text-gray-600">{s.contact_email}</td>
+                      <td className="px-6 py-4 text-gray-600">{s.email}</td>
                       <td className="px-6 py-4 text-gray-600">{s.phone}</td>
                       <td className="px-6 py-4 text-gray-600">{s.address}</td>
                       <td className="px-6 py-4 text-right">

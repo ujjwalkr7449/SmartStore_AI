@@ -61,7 +61,6 @@ def run_ai_chat(db: Session, message: str):
             "function": {
                 "name": "get_low_stock_products",
                 "description": "Return products at or below threshold",
-                "parameters": {"type": "object", "properties": {}},
             },
         },
         {
@@ -94,12 +93,30 @@ def run_ai_chat(db: Session, message: str):
         return msg.content or "", {}
 
     tool_results = {}
-    messages = [{"role": "user", "content": message}, msg]
+    assistant_msg = {
+        "role": "assistant",
+        "content": msg.content or "",
+        "tool_calls": [
+            {
+                "id": t.id,
+                "type": t.type,
+                "function": {
+                    "name": t.function.name,
+                    "arguments": t.function.arguments,
+                },
+            }
+            for t in msg.tool_calls
+        ] if msg.tool_calls else None
+    }
+    if assistant_msg["tool_calls"] is None:
+        del assistant_msg["tool_calls"]
+        
+    messages = [{"role": "user", "content": message}, assistant_msg]
     for call in msg.tool_calls:
         args = json.loads(call.function.arguments or "{}")
         result = tools[call.function.name](args)
         tool_results[call.function.name] = result
-        messages.append({"role": "tool", "tool_call_id": call.id, "content": json.dumps(result)})
+        messages.append({"role": "tool", "tool_call_id": call.id, "name": call.function.name, "content": json.dumps(result)})
 
     second = client.chat.completions.create(model=settings.openai_model, messages=messages)
     return second.choices[0].message.content, tool_results

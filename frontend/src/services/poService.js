@@ -1,12 +1,12 @@
 import apiClient from './apiClient';
 
 export const fetchPurchaseOrders = async () => {
-  const { data } = await apiClient.get('/purchase-orders');
+  const { data } = await apiClient.get('/purchase-orders/');
   return data;
 };
 
 export const createPurchaseOrder = async (payload) => {
-  const { data } = await apiClient.post('/purchase-orders', payload);
+  const { data } = await apiClient.post('/purchase-orders/', payload);
   return data;
 };
 

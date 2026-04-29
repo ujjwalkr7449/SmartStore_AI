@@ -10,12 +10,12 @@ from services.purchase_order_service import create_purchase_order, update_status
 router = APIRouter()
 
 
-@router.post("", response_model=PurchaseOrderResponse, status_code=status.HTTP_201_CREATED)
+@router.post("/", response_model=PurchaseOrderResponse, status_code=status.HTTP_201_CREATED)
 def create(payload: PurchaseOrderCreateRequest, db: Session = Depends(get_db), user=Depends(get_current_user)):
     return create_purchase_order(db, payload.supplier_id, payload.items, user.id)
 
 
-@router.get("", response_model=list[PurchaseOrderResponse])
+@router.get("/", response_model=list[PurchaseOrderResponse])
 def list_pos(db: Session = Depends(get_db), _=Depends(get_current_user)):
     return db.query(PurchaseOrder).all()
 

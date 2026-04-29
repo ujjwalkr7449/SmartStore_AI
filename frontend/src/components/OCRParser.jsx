@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import { uploadInvoice } from '../services/aiService';
 
-export default function OCRParser() {
+export default function OCRParser({ onConfirm }) {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -63,7 +63,14 @@ export default function OCRParser() {
       
       {result && (
         <div className="mt-6 bg-slate-950/50 p-4 rounded-xl border border-slate-800">
-          <h3 className="text-sm font-medium text-slate-200 mb-2">Extraction Results:</h3>
+          <div className="flex justify-between items-center mb-2">
+            <h3 className="text-sm font-medium text-slate-200">Extraction Results:</h3>
+            {onConfirm && (
+              <button onClick={() => onConfirm(result)} className="text-xs bg-indigo-600 hover:bg-indigo-700 px-3 py-1.5 rounded-lg font-medium transition-colors shadow-sm">
+                Fill Order Form
+              </button>
+            )}
+          </div>
           <pre className="text-xs text-indigo-200 overflow-x-auto p-2 bg-slate-900 rounded-lg">
             {JSON.stringify(result, null, 2)}
           </pre>

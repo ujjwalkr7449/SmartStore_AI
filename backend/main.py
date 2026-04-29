@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from core.config import settings
 from db.base import Base
 from db.session import engine
-from routers import ai, auth, health, products, purchase_orders, suppliers
+from routers import ai, auth, health, products, purchase_orders, suppliers, dashboard, automation
 from services.scheduler_service import scheduler_service
 from utils.exceptions import register_exception_handlers
 
@@ -40,4 +40,6 @@ app.include_router(auth.router, prefix="/auth", tags=["auth"])
 app.include_router(products.router, prefix="/products", tags=["products"])
 app.include_router(suppliers.router, prefix="/suppliers", tags=["suppliers"])
 app.include_router(purchase_orders.router, prefix="/purchase-orders", tags=["purchase-orders"])
+app.include_router(dashboard.router, prefix="/dashboard", tags=["dashboard"])
+app.include_router(automation.router, prefix="/automation", tags=["automation"])
 app.include_router(ai.router, prefix="/ai", tags=["ai"])

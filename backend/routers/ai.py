@@ -21,7 +21,9 @@ def ai_chat(payload: AIChatRequest, db: Session = Depends(get_db), _=Depends(get
 
 @router.post("/invoice/parse", response_model=InvoiceParseResponse)
 async def parse_invoice(file: UploadFile = File(...), _=Depends(get_current_user)):
-    file_path = Path("backend/uploads") / file.filename
+    upload_dir = Path("uploads")
+    upload_dir.mkdir(parents=True, exist_ok=True)
+    file_path = upload_dir / file.filename
     file_path.write_bytes(await file.read())
     data = parse_invoice_with_fallback(file_path)
     return data

@@ -4,6 +4,7 @@ import Layout from '../components/Layout';
 import ProductForm from '../components/ProductForm';
 import { useProducts } from '../hooks/useProducts';
 import { forecastProduct } from '../services/productService';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 export default function ProductsPage() {
   const { products, loading, error, add } = useProducts();
@@ -20,6 +21,17 @@ export default function ProductsPage() {
     } finally {
       setForecastingId(null);
     }
+  };
+
+  const generateChartData = (avg) => {
+    return [
+      { name: 'Week 1', demand: Math.round(avg * 0.8) },
+      { name: 'Week 2', demand: Math.round(avg * 1.1) },
+      { name: 'Week 3', demand: Math.round(avg * 0.9) },
+      { name: 'Week 4', demand: Math.round(avg * 1.2) },
+      { name: 'Forecast W5', demand: Math.round(avg) },
+      { name: 'Forecast W6', demand: Math.round(avg * 1.05) }
+    ];
   };
 
   return (
@@ -53,9 +65,21 @@ export default function ProductsPage() {
                     <td className="p-4 text-gray-600">{item.threshold}</td>
                     <td className="p-4 text-right">
                       {forecasts[item.id] ? (
-                        <div className="text-xs text-indigo-700 font-medium bg-indigo-50 px-2 py-1 rounded-lg inline-block">
-                          Avg Demand: {forecasts[item.id].moving_average_demand.toFixed(1)} <br/>
-                          Rec. Restock: {forecasts[item.id].recommended_restock_quantity}
+                        <div className="flex flex-col items-end gap-2">
+                          <div className="text-xs text-indigo-700 font-medium bg-indigo-50 px-2 py-1 rounded-lg inline-block">
+                            Avg Demand: {forecasts[item.id].moving_average_demand.toFixed(1)} | Rec. Restock: {forecasts[item.id].recommended_restock_quantity}
+                          </div>
+                          <div className="h-24 w-48">
+                            <ResponsiveContainer width="100%" height="100%">
+                              <LineChart data={generateChartData(forecasts[item.id].moving_average_demand)}>
+                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
+                                <XAxis dataKey="name" hide />
+                                <YAxis hide />
+                                <Tooltip contentStyle={{ fontSize: '10px', borderRadius: '8px' }} />
+                                <Line type="monotone" dataKey="demand" stroke="#4f46e5" strokeWidth={2} dot={{ r: 3 }} />
+                              </LineChart>
+                            </ResponsiveContainer>
+                          </div>
                         </div>
                       ) : (
                         <button 

@@ -1,0 +1,8 @@
+{
+  "supplier": "Test Supplier",
+  "items": [
+    {"name": "Test Laptop", "quantity": 10, "unit_price": 999.99},
+    {"name": "Mouse", "quantity": 50, "unit_price": 19.99}
+  ],
+  "total": 10999.40
+}
